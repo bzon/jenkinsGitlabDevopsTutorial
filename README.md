@@ -159,7 +159,8 @@ The Credential's `Kind` should be a `Username and Password`.
 ### Create a Gitlab user API Token
 
 - Go to your personal `Settings` -> `Access Tokens`.  
-- Name your token to whatever you want and ensure that `api Access your API` is ticked.  
+- Name your token to whatever you want and ensure that `api Access your API` and `read_user` is ticked.  
+- __Take note of this token__  
 
 ![](./img/gitlab_create_user_token.gif)
 
