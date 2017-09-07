@@ -159,7 +159,7 @@ The Credential's `Kind` should be a `Username and Password`.
 ### Create a Gitlab user API Token
 
 - Go to your personal `Settings` -> `Access Tokens`.  
-- Name your token to whatever you want and ensure that `api Access your API` and `read_user` is ticked.  
+- Name your token and ensure that `api Access your API` and `read_user` is ticked.  
 - __Take note of this token__  
 
 ![](./img/gitlab_create_user_token.gif)
@@ -234,7 +234,7 @@ __Branch specifier__ is:
 
 __NOTE__: 
 
-As of this writing, I'm using `gitlab-ce` latest `9.5` released version and there is currently a [webhook bug](#https://gitlab.com/gitlab-org/gitlab-ce/issues/37288) introduced in it. 
+As of this writing, I'm using `gitlab-ce` latest `9.5` released version and there is currently a [webhook bug #37288](https://gitlab.com/gitlab-org/gitlab-ce/issues/37288) introduced in it. 
 
 The impact of this is I wasn't be able to successfully do a `Test` -> `Push Events` or any events from the webhook configuration page.  
 
