@@ -13,6 +13,7 @@
     * [Installing Oracle JDK](#installing-oracle-jdk)
     * [Installing Apache Maven](#installing-apache-maven)
 - [Creating a FreeStyle Jenkins Build](#creating-a-freestyle-jenkins-build)
+    * [Post Build Configurations](#post-build-configurations)
 
 ## Jenkins Installation
 
@@ -107,3 +108,6 @@ Next, add an `Invoke top-level Maven targets` Step to build our petclinic app. E
 ![](./img/freestyle_maven_config.gif)  
 
 
+### Post Build Configurations
+
+![](./img/freestyle_post_build_config.png)
