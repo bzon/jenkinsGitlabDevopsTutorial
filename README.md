@@ -373,6 +373,12 @@ docker run --name nexus \
 
 __Deploy to a snapshot repository in Nexus__:  
 
+__Maven properties__:
+
+`maven.skip.test`, should be `true`  
+`dependencyCheck.skip`, should be `true`  
+`altDeploymentRepository`, should be `nexus-snapshot::default::http://admin:admin123@52.15.197.136:8081/nexus/content/repositories/snapshots/` for snapshot. Change the ip address, username and password (admin/admin123 is Nexus default) accordingly.  
+
 ![](./img/freestyle_maven_deploy_config.png)
 
 We are using a snapshot repository because we are building a snapshot version. See your root pom.xml and the version is configured as `<version>1.0-SNAPSHOT</version>` and a release version is something like `<version>1.0.1</version>`.  
