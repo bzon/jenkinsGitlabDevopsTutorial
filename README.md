@@ -28,10 +28,14 @@
         * [Add Build Triggers for Push Events](#add-build-triggers-for-push-events)
     * [Add Webhook Integration in the Petclinic Repository for Push events](#add-webhook-integration-in-the-petclinic-repository-for-push-events)
     * [Testing the Push Event webhook](#testing-the-push-event-webhook)
+
 ## Jenkins Installation
 
 ```bash
-docker run --name=jenkins -v jenkins_data:/var/jenkins_home -p 8080:8080 -p 50000:50000 -d jenkins/jenkins:lts
+docker run --name=jenkins \
+--volume jenkins_data:/var/jenkins_home \
+--publish 8080:8080 --publish 50000:50000 \
+-d jenkins/jenkins:lts
 ```
 
 Get the initial administrator password by view the jenkins logs.   
@@ -141,7 +145,14 @@ From here, you will have to use your own hosted Gitlab server instead of Github.
 __Using Docker__
 
 ```bash
-docker run --detach --hostname localhost --publish 443:443 --publish 80:80 --publish 9022:22 --name gitlab --restart always --volume gitlab_config:/etc/gitlab --volume gitlab_logs:/var/log/gitlab --volume gitlab_data:/var/opt/gitlab gitlab/gitlab-ce
+docker run --hostname localhost \
+--publish 443:443 --publish 80:80 \
+--publish 9022:22 --name gitlab \
+--restart always \
+--volume gitlab_config:/etc/gitlab \
+--volume gitlab_logs:/var/log/gitlab \
+--volume gitlab_data:/var/opt/gitlab \
+-d gitlab/gitlab-ce
 ```
 
 ## Import Petclinic Project from Github to Gitlab
