@@ -1,40 +1,49 @@
 # Table of Contents
 
-- [Jenkins Installation](#jenkins-installation)
-- [Jenkins Plugins](#jenkins-plugins)
-    * [Plugins to Install](#plugins-to-install)
-        * [Required Plugins to Install](#required-plugins-to-install)
-        * [Installing plugins from the initial setup](#installing-default-plugins-from-the-initial-setup)
-        * [Installing plugins manually](#installing-plugins-manually)
-- [Jenkins Tools](#jenkins-tools)
-    * [Installing Oracle JDK](#installing-oracle-jdk)
-    * [Installing Apache Maven](#installing-apache-maven)
-- [Creating a FreeStyle Jenkins Build for Petclinic](#creating-a-freestyle-jenkins-build)
-    * [Create a new Job](#create-a-new-job)
-    * [Configuring Git SCM Source](#configuring-git-scm-source)
-    * [Configuring Build Step](#configuring-build-step)
-    * [Configuring Post Build Actions](#configuring-post-build-actions)
+- [Jenkins](#jenkins)
+    * [Jenkins Installation](#jenkins-installation)
+    * [Jenkins Plugins](#jenkins-plugins)
+        * [Plugins to Install](#plugins-to-install)
+            * [Required Plugins to install](#required-plugins-to-install)
+            * [Installing plugins from the initial setup](#installing-default-plugins-from-the-initial-setup)
+            * [Installing plugins manually](#installing-plugins-manually)
+    * [Jenkins Tools](#jenkins-tools)
+        * [Installing Oracle JDK](#installing-oracle-jdk)
+        * [Installing Apache Maven](#installing-apache-maven)
+    * [Creating a FreeStyle Jenkins Build for Petclinic](#creating-a-freestyle-jenkins-build)
+        * [Create a new Job](#create-a-new-job)
+        * [Configuring Git SCM Source](#configuring-git-scm-source)
+        * [Configuring Build Step](#configuring-build-step)
+        * [Configuring Post Build Actions](#configuring-post-build-actions)
+    * [TODO - Creating a Pipeline Jenkins Build for Petclinic](#creating-a-pipeline-jenkins-build-for-petclinic)
 - [Gitlab](#gitlab)
     * [Gitlab Installation](#gitlab-installation)
     * [Import Petclinic Project from Github to Gitlab](#import-petclinic-project-from-github-to-gitlab)
     * [Create Jenkins Gitlab clone Credentials](#create-jenkins-gitlab-clone-credentials)
     * [Configure Gitlab and Jenkins Integration](#configure-gitlab-and-jenkins-integration)
+        * [Create a Gitlab user API Token](#create-a-gitlab-user-api-token)
+        * [Create a Gitlab API Token Credentials in Jenkins](#create-a-gitlab-api-token-credentials-in-jenkins)
+        * [Configure Gitlab connection in Jenkins](#configure-gitlab-connection-in-jenkins)
+        * [OPTIONAL - Configure Jenkins System Logs](#configure-jenkins-system-logs)
     * [Disable Prevent Cross Site Request Forgery exploit in Jenkins](#disable-prevent-cross-site-request-forgery-exploit-in-jenkins)
     * [Update the PetClinicBuild Jenkins Job for Gitlab Integration](#update-the-petclinic-build-jenkins-job-for-gitlab-integration)
         * [Update Source Code Management](#update-source-code-management)
         * [Add Build Triggers for Push Events](#add-build-triggers-for-push-events)
+    * [TODO - Update the PetClinicBuild Pipeline Jenkins Job for Gitlab Integration](#update-the-petclinicpipeline-jenkins-job-for-gitlab-integration)
     * [Add Webhook Integration in the Petclinic Repository for Push events](#add-webhook-integration-in-the-petclinic-repository-for-push-events)
     * [Testing the Push Event webhook](#testing-the-push-event-webhook)
 - [SonarQube](#sonarqube)
     * [SonarQube Installation](#sonarqube-installation)
     * [Update the PetClinicBuild Jenkins Job to run SonarQube Maven](#update-the-petclinicbuild-jenkins-job-to-run-sonarqube-maven)
+    * [TODO - Update the PetClinicBuild Pipeline Jenkins Job to run SonarQube Maven](#update-the-petclinicbuild-pipeline-jenkins-job-to-run-sonarqube-maven)
 - [Nexus](#nexus)
     * [Nexus Installation](#nexus-installation)
     * [Update the PetClinicBuild Jenkins Job to run Maven Deploy to Nexus](#update-the-petclinicbuild-jenkins-job-to-run-maven-deploy-to-nexus)
-
+    * [TODO - Update the PetClinicBuild Pipeline Jenkins Job to run Maven Deploy to Nexus](#update-the-petclinicbuild-pipeline-jenkins-job-to-run-maven-deploy-to-nexus)
+- [Slack Notifications](#slack-notifications)
 ----
 
-# Jenkins Tutorial
+# Jenkins
 
 ## Jenkins Installation
 
@@ -143,6 +152,11 @@ __Add post-build action__
 
 ![](./img/freestyle_post_build_config.png)
 
+## Creating a Pipeline Jenkins Build for Petclinic
+
+__TODO__
+
+---
 # Gitlab  
 
 From here, you will have to use your own hosted Gitlab server instead of Github. 
@@ -241,6 +255,10 @@ __Branch specifier__ is:
 
 ![](./img/jenkins_gitlab_triggers_config.png)
 
+## Update the PetClinicBuild Pipeline Jenkins Job for Gitlab Integration
+
+__TODO__
+
 ## Add Webhook Integration in the Petclinic Repository for Push events
 
 - In your Petclinic project repository page, go to `Settings` -> `Integration` then `Add Webhook`. 
@@ -271,6 +289,7 @@ Which results to the Jenkins `PetClinicBuild` job getting triggered.
 
 ![](./img/gitlab_jenkins_triggered.gif)
 
+----
 # SonarQube
 
 ## SonarQube Installation
@@ -296,6 +315,11 @@ Add a `Build Step` of `Invoke top-level Maven targets` with the following config
 
 ![](./img/freestyle_maven_sonar_config.png)
 
+## Update the PetClinicBuild Pipeline Jenkins Job to run run SonarQube Maven 
+
+__TODO__
+
+----
 # Nexus
 
 ## Nexus Installation
@@ -319,3 +343,14 @@ __Deploy to a snapshot repository in Nexus__:
 We are using a snapshot repository because we are building a snapshot version. See your root pom.xml and the version is configured as `<version>1.0-SNAPSHOT</version>` and a release version is something like `<version>1.0.1</version>`.  
 
 For release versions, the `altDeploymentRepository` property should be something like, `nexus-snapshot::default::http://52.15.197.136:8081/nexus/content/repositories/releases/`  
+
+## Update the PetClinicBuild Pipeline Jenkins Job to run Maven Deploy to Nexus 
+
+__TODO__
+
+----
+# Slack Notifications
+
+Configure your PetClinic Jenkins Build to send slack notifications in a channel.  
+
+Follow the guide here:  https://github.com/jenkinsci/slack-plugin  
