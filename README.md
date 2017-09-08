@@ -10,6 +10,7 @@
     * [Jenkins Tools](#jenkins-tools)
         * [Installing Oracle JDK](#installing-oracle-jdk)
         * [Installing Apache Maven](#installing-apache-maven)
+    * [Jenkins Slave Setup](#jenkins-slave-setup)
     * [Creating a FreeStyle Jenkins Build for Petclinic](#creating-a-freestyle-jenkins-build)
         * [Create a new Job](#create-a-new-job)
         * [Configuring Git SCM Source](#configuring-git-scm-source)
@@ -111,6 +112,35 @@ An account in oracle.com is required to be able to install Oracle JDK from Jenki
 ### Installing Apache Maven
 
 ![](./img/install_maven.gif)
+
+## Jenkins Slave Setup
+
+In this guide, we are going to create a Jenkins slave to run our build instead of running builds in the `Master` server. We are going to use a Linux server and bootsrap it via `SSH` protocol. The requirement is an ssh `private key` to be added as a Jenkins credential.  
+
+Create a `Credential` with Kind `SSH Username with private key`.  
+
+![](./img/jenkins_create_ssh_cred.png)
+
+Get your Linux server private ip address.  
+```bash
+hostname -i
+```
+
+Go to `Manage Jenkins` -> `Manage Nodes` -> Then `Add` a new `Permanent` node. 
+
+- `Remote root directory`, is where a Jenkins job will create its workspace.  
+- `Labels`, is an identifier for your Jenkins slave. Add more by separating labels with spaces.  
+- `Usage`, is `Use this node as much as possible` to make it the default server to run your builds.  
+- `Launch Method`, is `Launch slave agents via SSH` because we are connecting to a Linux server using SSH key.  
+    * `Host`, is the server's `private ip address`.  
+    * `Credential`, is the Jenkins Credential you created from the above. 
+    * `Host Key Verification Strategy`, ensure that this is `Non verifiying Verification Strategy`  
+
+Follow the example below.  
+
+![](./img/jenkins_linux_slave_config.gif)
+
+Click `Save`.  
 
 ## Creating a FreeStyle Jenkins Build for Petclinic
 
@@ -344,6 +374,10 @@ __Deploy to a snapshot repository in Nexus__:
 We are using a snapshot repository because we are building a snapshot version. See your root pom.xml and the version is configured as `<version>1.0-SNAPSHOT</version>` and a release version is something like `<version>1.0.1</version>`.  
 
 For release versions, the `altDeploymentRepository` property should be something like, `nexus-release::default::http://52.15.197.136:8081/nexus/content/repositories/releases/`  
+
+__Downloading binaries from Nexus__:
+  
+The result of the above configuration is the snapshot will be deployed in Nexus Snapshot repository and can be browse via url http://52.15.197.136:8081/nexus/content/repositories/snapshots/.  
 
 ## Update the PetClinicBuild Pipeline Jenkins Job to run Maven Deploy to Nexus 
 
