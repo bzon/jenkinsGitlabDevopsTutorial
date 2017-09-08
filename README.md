@@ -301,7 +301,7 @@ __Using Docker__:
 docker run --name nexus \
 --publish 8081:8081 \
 --volume nexus_data:/sonatype-work \
-sonatype/nexus:oss
+-d sonatype/nexus:oss
 ```
 
 ## Update the PetClinicBuild Jenkins Job to run Maven Deploy to Nexus 
