@@ -278,6 +278,7 @@ __Using Docker__:  pre configured with plugins.
 docker run --name sonarqube \
 --volume sonar_data:/opt/sonarqube \
 --publish 9000:9000 --publish 9092:9092 \
+-e ADOP_LDAP_ENABLED=false \
 -d bzon/adop-sonar:6.4
 ```
 Docker project: https://github.com/bzon/adop-sonar/  
