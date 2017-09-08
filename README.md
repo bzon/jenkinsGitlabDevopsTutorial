@@ -83,6 +83,7 @@ Jenkins has thousands of plugins that you can use in your software development p
 - Environment Injector Plugin
 - SonarQube Scanner Plugin
 - OWASP Dependency Check Plugin
+- Self-Organizing Swarm Plug-in Modules
 - Slack Notification
 
 #### Installing default plugins from the initial setup  
@@ -342,7 +343,7 @@ __Deploy to a snapshot repository in Nexus__:
 
 We are using a snapshot repository because we are building a snapshot version. See your root pom.xml and the version is configured as `<version>1.0-SNAPSHOT</version>` and a release version is something like `<version>1.0.1</version>`.  
 
-For release versions, the `altDeploymentRepository` property should be something like, `nexus-snapshot::default::http://52.15.197.136:8081/nexus/content/repositories/releases/`  
+For release versions, the `altDeploymentRepository` property should be something like, `nexus-release::default::http://52.15.197.136:8081/nexus/content/repositories/releases/`  
 
 ## Update the PetClinicBuild Pipeline Jenkins Job to run Maven Deploy to Nexus 
 
