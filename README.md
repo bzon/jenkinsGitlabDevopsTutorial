@@ -1,6 +1,4 @@
-# Jenkins Tutorial
-
-## Table of Contents
+# Table of Contents
 
 - [Jenkins Installation](#jenkins-installation)
 - [Jenkins Plugins](#jenkins-plugins)
@@ -16,7 +14,6 @@
     * [Configuring Git SCM Source](#configuring-git-scm-source)
     * [Configuring Build Step](#configuring-build-step)
     * [Configuring Post Build Actions](#configuring-post-build-actions)
-
 - [Gitlab](#gitlab)
     * [Gitlab Installation](#gitlab-installation)
     * [Import Petclinic Project from Github to Gitlab](#import-petclinic-project-from-github-to-gitlab)
@@ -28,6 +25,16 @@
         * [Add Build Triggers for Push Events](#add-build-triggers-for-push-events)
     * [Add Webhook Integration in the Petclinic Repository for Push events](#add-webhook-integration-in-the-petclinic-repository-for-push-events)
     * [Testing the Push Event webhook](#testing-the-push-event-webhook)
+- [SonarQube](#sonarqube)
+    * [SonarQube Installation](#sonarqube-installation)
+    * [Update the PetClinicBuild Jenkins Job to run SonarQube Maven](#update-the-petclinicbuild-jenkins-job-to-run-sonarqube-maven)
+- [Nexus](#nexus)
+    * [Nexus Installation](#nexus-installation)
+    * [Update the PetClinicBuild Jenkins Job to run Maven Deploy to Nexus](#update-the-petclinicbuild-jenkins-job-to-run-maven-deploy-to-nexus)
+
+----
+
+# Jenkins Tutorial
 
 ## Jenkins Installation
 
@@ -261,3 +268,46 @@ echo " " >> pom.xml && git add -A && git commit -m "hook test" && git push origi
 Which results to the Jenkins `PetClinicBuild` job getting triggered.  
 
 ![](./img/gitlab_jenkins_triggered.gif)
+
+# SonarQube
+
+## SonarQube Installation
+
+__Using Docker__:  pre configured with plugins.  
+```bash
+docker run --name sonarqube \
+--volume sonar_data:/opt/sonarqube \
+--publish 9000:9000 --publish 9092:9092 \
+-d bzon/adop-sonar:6.4
+```
+Docker project: https://github.com/bzon/adop-sonar/  
+
+## Update the PetClinicBuild Jenkins Job to run SonarQube Maven 
+
+Add a `Build Step` of `Invoke top-level Maven targets` with the following configuration  
+
+`sonar.host.url`, the sonarqube server host url.  
+`sonar.login`, the administrator username.  
+`sonar.password`, the administrator password.  
+
+![](./img/freestyle_maven_sonar_config.png)
+
+# Nexus
+
+## Nexus Installation
+
+__Using Docker__:  
+```bash
+docker run --name nexus \
+--publish 8081:8081 \
+--volume nexus_data:/sonatype-work \
+sonatype/nexus:oss
+```
+
+## Update the PetClinicBuild Jenkins Job to run Maven Deploy to Nexus 
+
+[Reference guide](https://github.com/bzon/spring-petclinic/blob/master/devops_docs/NEXUS_DEPLOY.md)
+
+__Deploy to a snapshot repository in Nexus__:  
+
+![](./img/freestyle_maven_deploy_config.png)
