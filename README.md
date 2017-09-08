@@ -41,6 +41,10 @@
     * [Nexus Installation](#nexus-installation)
     * [Update the PetClinicBuild Jenkins Job to run Maven Deploy to Nexus](#update-the-petclinicbuild-jenkins-job-to-run-maven-deploy-to-nexus)
     * [TODO - Update the PetClinicBuild Pipeline Jenkins Job to run Maven Deploy to Nexus](#update-the-petclinicbuild-pipeline-jenkins-job-to-run-maven-deploy-to-nexus)
+- [Deployments using Docker](#deployments-using-docker)
+    * [Update the PetClinicBuild Pipeline Jenkins Job to Build and Deploy Petclinic](#update-the-petclinicbuild-pipeline-jenkins-job-to-build-and-deploy-petclinic)
+    * [Update your PetClinic project Dockerfile](#update-your-petclinic-project-dockerfile)
+- [TODO - FitNesse and Selenium](#fitnesse-and-selenium)
 - [Slack Notifications](#slack-notifications)
 ----
 
@@ -382,6 +386,53 @@ The result of the above configuration is the snapshot will be deployed in Nexus 
 ## Update the PetClinicBuild Pipeline Jenkins Job to run Maven Deploy to Nexus 
 
 __TODO__
+
+---
+# Deployments using Docker
+
+__Requirements__:  
+- Configure your PetclinicBuild Job to run or restrict its execution in a Linux node agent.  
+- Ensure that `docker` is installed in the Linux node.    
+- Ensure that `git` is installed in the Linux node.  
+
+## Update the PetClinicBuild Pipeline Jenkins Job to Build and Deploy Petclinic
+
+Add a `Build Step` of `Execute shell commands` with the following.  
+
+```bash
+sudo docker rm -f spring-petclinic || echo "petclinic container is not running.."
+
+echo "Running docker build.."
+sudo docker build -t spring-petclinic:latest .
+
+echo "Deploying the latest build of petclinic container"
+sudo docker run -d --name=spring-petclinic -p 8085:8080 spring-petclinic:latest
+```  
+
+![](./img/jenkins_deploy_docker_config.png)  
+
+## Update your PetClinic project Dockerfile
+
+Modify the `Dockerfile` in your petclinic git repository with the following and then `commit` it to the repository.  
+
+```dockerfile
+FROM marceldekoster/alpine-oracle-jdk-8
+
+MAINTAINER John Bryan Sazon <john.bryan.j.sazon@accenture.com>
+
+ARG IMAGE_VERSION
+
+LABEL version=${IMAGE_VERSION}
+
+EXPOSE 8080
+
+ADD target/spring-petclinic-*.jar /spring-petclinic.jar
+
+CMD ["java","-jar","/spring-petclinic.jar"]
+```
+
+---
+# FitNesse and Selenium
 
 ----
 # Slack Notifications
