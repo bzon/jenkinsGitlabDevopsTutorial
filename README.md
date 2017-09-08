@@ -182,7 +182,7 @@ The Credential's `Kind` should be a `Username and Password`.
 
 ![](./img/gitlab_create_user_token.gif)
 
-### Create a Gitlab API Token Credentials in Jenkins__
+### Create a Gitlab API Token Credentials in Jenkins
 
 The Credential's `Kind` should be a `Gitlab API Token`.  
 
@@ -198,6 +198,8 @@ The Credential's `Kind` should be a `Gitlab API Token`.
 ![](./img/jenkins_gitlab_connection_config.gif)
 
 ### Configure Jenkins System Logs 
+
+__This is OPTIONAL__
 
 Murphy's Law.
 
@@ -313,3 +315,7 @@ docker run --name nexus \
 __Deploy to a snapshot repository in Nexus__:  
 
 ![](./img/freestyle_maven_deploy_config.png)
+
+We are using a snapshot repository because we are building a snapshot version. See your root pom.xml and the version is configured as `<version>1.0-SNAPSHOT</version>` and a release version is something like `<version>1.0.1</version>`.  
+
+For release versions, the `altDeploymentRepository` property should be something like, `nexus-snapshot::default::http://52.15.197.136:8081/nexus/content/repositories/releases/`  
