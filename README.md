@@ -1,12 +1,18 @@
+# Synopsis 
+
+This tutorial is about creating a Jenkins Build for a sample java project using Jenkins and Gitlab integration. This will also cover how to run SonarQube, and OWASP dependency check that is mostly used in Jenkins as part of a DevOps java project's Continuous Integration/Delivery pipeline.  
+
+__Requirements__ :
+- Learn git basics. You can use my tutorial [here](https://github.com/bzon/gitTutorial).  
+
 # Table of Contents
 
 - [Jenkins](#jenkins)
     * [Jenkins Installation](#jenkins-installation)
     * [Jenkins Plugins](#jenkins-plugins)
-        * [Plugins to Install](#plugins-to-install)
-            * [Required Plugins to install](#required-plugins-to-install)
-            * [Installing plugins from the initial setup](#installing-default-plugins-from-the-initial-setup)
-            * [Installing plugins manually](#installing-plugins-manually)
+        * [Required Plugins to install](#required-plugins-to-install)
+        * [Installing plugins from the initial setup](#installing-default-plugins-from-the-initial-setup)
+        * [Installing plugins manually](#installing-plugins-manually)
     * [Jenkins Tools](#jenkins-tools)
         * [Installing Oracle JDK](#installing-oracle-jdk)
         * [Installing Apache Maven](#installing-apache-maven)
@@ -44,7 +50,6 @@
 - [Deployments using Docker](#deployments-using-docker)
     * [Update the PetClinicBuild Pipeline Jenkins Job to Build and Deploy Petclinic](#update-the-petclinicbuild-pipeline-jenkins-job-to-build-and-deploy-petclinic)
     * [Update your PetClinic project Dockerfile](#update-your-petclinic-project-dockerfile)
-- [TODO - FitNesse and Selenium](#fitnesse-and-selenium)
 - [Slack Notifications](#slack-notifications)
 ----
 
@@ -119,9 +124,21 @@ An account in oracle.com is required to be able to install Oracle JDK from Jenki
 
 ## Jenkins Slave Setup
 
-In this guide, we are going to create a Jenkins slave to run our build instead of running builds in the `Master` server. We are going to use a Linux server and bootsrap it via `SSH` protocol. The requirement is an ssh `private key` to be added as a Jenkins credential.  
+In this guide, we are going to create a Jenkins slave to run our build instead of running builds in the `Master` server. Some also prefer to call the Jenkins slave a `Jenkins node` or a `Jenkins agent`.  
+
+We are going to use a Linux server and bootsrap it via `SSH` protocol. The requirement is an ssh `private key` to be added as a Jenkins credential.  
+
+__NOTE__: 
+Before proceeding:   
+- Ensure that `docker` and `git` is installed in the Linux server.  
+- Ensure that you have a user with an `ssh key` that can access the Linux server. Follow this [comprehensive guide](https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server) to learn how ssh key works and how it can be created.  
+
+In the below example, I'm using an AWS EC2 linux server and AWS lets you create and download an ssh private key for your `ec2-user`.  
 
 Create a `Credential` with Kind `SSH Username with private key`.  
+
+- `Username`, is the user that can access the Linux server.  
+- `Private Key`, choose `Enter directly` and copy then paste the content of the `Username`'s ssh `private key`.   
 
 ![](./img/jenkins_create_ssh_cred.png)
 
@@ -297,7 +314,7 @@ __TODO__
 ## Add Webhook Integration in the Petclinic Repository for Push events
 
 - In your Petclinic project repository page, go to `Settings` -> `Integration` then `Add Webhook`. 
-- Ensure that `Push Events` is the only one that just ticked.  
+- Ensure that `Push Events` is the only one that is ticked.  
 - Paste the `noted` parameters from the setup [above](#add-build-triggers-for-push-events). 
 - The example below shows an example `Webhook` configuration.  
 
@@ -344,9 +361,9 @@ Docker project: https://github.com/bzon/adop-sonar/
 
 Add a `Build Step` of `Invoke top-level Maven targets` with the following configuration  
 
-`sonar.host.url`, the sonarqube server host url.  
-`sonar.login`, the administrator username.  
-`sonar.password`, the administrator password.  
+- `sonar.host.url`, is the sonarqube server host url.  
+- `sonar.login`, is the administrator username.  
+- `sonar.password`, is the administrator password.  
 
 ![](./img/freestyle_maven_sonar_config.png)
 
@@ -373,13 +390,13 @@ docker run --name nexus \
 
 __Deploy to a snapshot repository in Nexus__:  
 
+![](./img/freestyle_maven_deploy_config.png)
+
 __Maven properties__:
 
-`maven.skip.test`, should be `true`  
-`dependencyCheck.skip`, should be `true`  
-`altDeploymentRepository`, should be `nexus-snapshot::default::http://admin:admin123@52.15.197.136:8081/nexus/content/repositories/snapshots/` for snapshot. Change the ip address, username and password (admin/admin123 is Nexus default) accordingly.  
-
-![](./img/freestyle_maven_deploy_config.png)
+- `maven.skip.test`, should be `true`  
+- `dependencyCheck.skip`, should be `true`  
+- `altDeploymentRepository`, should be `nexus-snapshot::default::http://admin:admin123@52.15.197.136:8081/nexus/content/repositories/snapshots/` for snapshot. Change the ip address, username and password accordingly. admin/admin123 is Nexus default username/password for the administrator.  
 
 We are using a snapshot repository because we are building a snapshot version. See your root pom.xml and the version is configured as `<version>1.0-SNAPSHOT</version>` and a release version is something like `<version>1.0.1</version>`.  
 
@@ -396,8 +413,10 @@ __TODO__
 ---
 # Deployments using Docker
 
+This guide will cover the basic on how to build and run your petclinic application using docker basic commands. For now, you will deploy the application in the [jenkins linux slave](#jenkins-slave-setup) that you configured. 
+
 __Requirements__:  
-- Configure your PetclinicBuild Job to run or restrict its execution in a Linux node agent.  
+- Configure your PetclinicBuild Job to run or restrict its execution in a Linux node.  
 - Ensure that `docker` is installed in the Linux node.    
 - Ensure that `git` is installed in the Linux node.  
 
@@ -424,22 +443,12 @@ Modify the `Dockerfile` in your petclinic git repository with the following and 
 ```dockerfile
 FROM marceldekoster/alpine-oracle-jdk-8
 
-MAINTAINER John Bryan Sazon <john.bryan.j.sazon@accenture.com>
-
-ARG IMAGE_VERSION
-
-LABEL version=${IMAGE_VERSION}
-
 EXPOSE 8080
 
 ADD target/spring-petclinic-*.jar /spring-petclinic.jar
 
 CMD ["java","-jar","/spring-petclinic.jar"]
 ```
-
----
-# FitNesse and Selenium
-
 ----
 # Slack Notifications
 
